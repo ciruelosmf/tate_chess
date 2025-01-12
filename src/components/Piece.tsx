@@ -1,26 +1,31 @@
-import Image from "next/image";
- 
- 
+// components/Piece.tsx
+import React from 'react';
+import { Piece as ChessJSPiece } from 'chess.js';
 
-// components/Piece.js
- 
+type PieceProps = {
+  piece: ChessJSPiece;
+};
 
-const Piece = ({ piece }) => {
-  // Determine the Unicode character or image for the piece
-  // Example using Unicode characters:
-  const unicodePieces = {
-    p: { b: '♟', w: '♙' },
-    n: { b: '♞', w: '♘' },
-    b: { b: '♝', w: '♗' },
-    r: { b: '♜', w: '♖' },
-    q: { b: '♛', w: '♕' },
-    k: { b: '♚', w: '♔' },
+const Piece: React.FC<PieceProps> = ({ piece }) => {
+  const pieceUnicode: { [key: string]: string } = {
+    wp: '♙',
+    wn: '♘',
+    wb: '♗',
+    wr: '♖',
+    wq: '♕',
+    wk: '♔',
+    bp: '♟',
+    bn: '♞',
+    bb: '♝',
+    br: '♜',
+    bq: '♛',
+    bk: '♚',
   };
 
-  const code = unicodePieces[piece.type][piece.color];
+  const code = pieceUnicode[`${piece.color}${piece.type}`];
 
   return (
-    <div className="text-4xl flex justify-center items-center h-full">
+    <div className="text-4xl flex justify-center items-center h-full select-none">
       {code}
     </div>
   );
