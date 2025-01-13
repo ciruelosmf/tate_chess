@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 // components/Chessboard.tsx
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Chess, Square, Piece as ChessJSPiece, Move } from 'chess.js';
 import Piece from './Piece';
 
@@ -38,32 +38,53 @@ const Chessboard: React.FC = () => {
 
     // If a piece is already selected
     if (selectedSquare) {
-      // Attempt to make the move
-      const move = game.move({ from: selectedSquare, to: clickedSquare, promotion: 'q' });
-      if (move) {
-        // Move was successful
-        setBoardState([...game.board()]);
+      if (clickedSquare === selectedSquare) {
+        // Clicked on the selected square again - deselect
         setSelectedSquare(null);
         setPossibleMoves([]);
-        // Force re-render
-        setGameState((prev) => prev + 1);
-        console.log("Move successful");
-
-        // Check for game over conditions
-        if (game.game_over()) {
-          if (game.in_checkmate()) {
-            alert('Checkmate!');
-          } else if (game.in_stalemate()) {
-            alert('Stalemate!');
-          } else if (game.in_draw()) {
-            alert('Draw!');
-          }
-        }
+        console.log("Deselected piece on", clickedSquare);
+      } else if (piece && piece.color === game.turn()) {
+        // Clicked on another of the player's own pieces - change selection
+        setSelectedSquare(clickedSquare);
+        // Get possible moves for the new selected piece
+        const moves = game.moves({ square: clickedSquare, verbose: true }) as Move[];
+        const destinations = moves.map((move) => move.to as Square);
+        setPossibleMoves(destinations);
+        console.log("Selected new piece on", clickedSquare);
       } else {
-        // Move was invalid
-        setSelectedSquare(null);
-        setPossibleMoves([]);
-        console.log("Invalid move");
+        // Attempt to make the move
+        let move;
+        try {
+          move = game.move({ from: selectedSquare, to: clickedSquare, promotion: 'q' });
+        } catch (error) {
+          move = null;
+        }
+
+        if (move) {
+          // Move was successful
+          setBoardState([...game.board()]);
+          setSelectedSquare(null);
+          setPossibleMoves([]);
+          // Force re-render
+          setGameState((prev) => prev + 1);
+          console.log("Move successful from", selectedSquare, "to", clickedSquare);
+
+          // Check for game over conditions
+          if (game.game_over()) {
+            if (game.in_checkmate()) {
+              alert('Checkmate!');
+            } else if (game.in_stalemate()) {
+              alert('Stalemate!');
+            } else if (game.in_draw()) {
+              alert('Draw!');
+            }
+          }
+        } else {
+          // Move was invalid
+          setSelectedSquare(null);
+          setPossibleMoves([]);
+          console.log("Invalid move from", selectedSquare, "to", clickedSquare);
+        }
       }
     } else {
       // No piece selected yet
@@ -73,6 +94,10 @@ const Chessboard: React.FC = () => {
         const moves = game.moves({ square: clickedSquare, verbose: true }) as Move[];
         const destinations = moves.map((move) => move.to as Square);
         setPossibleMoves(destinations);
+        console.log("Selected piece on", clickedSquare);
+      } else {
+        // Clicked on empty square or opponent's piece but no piece selected - do nothing
+        console.log("Clicked on", clickedSquare, "but no piece selected");
       }
     }
   };
