@@ -1,9 +1,13 @@
 "use client";
 import Image from "next/image";
 // components/Chessboard.tsx
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Chess, Square, Piece as ChessJSPiece, Move } from 'chess.js';
 import Piece from './Piece';
+import { StockfishEngine } from '../utils/stockfish';
+import { useStockfish } from '../hooks/stockfish';
+
+
 
 type SquareType = ChessJSPiece | null;
 type BoardType = SquareType[][];
@@ -29,6 +33,26 @@ const Chessboard: React.FC = () => {
     const files = 'abcdefgh';
     return (files[col] + (8 - row)) as Square;
   };
+
+
+
+
+
+
+  const engine = useStockfish();
+  const stockfishRef = useRef<StockfishEngine | null>(null);
+
+  useEffect(() => {
+    if (engine) {
+      stockfishRef.current = new StockfishEngine(engine);
+    }
+  }, [engine])
+
+
+
+
+
+
 
   const handleSquareClick = (row: number, col: number) => {
     const clickedSquare = getSquareNotation(row, col);
@@ -68,16 +92,19 @@ const Chessboard: React.FC = () => {
           // Force re-render
           setGameState((prev) => prev + 1);
           console.log("Move successful from", selectedSquare, "to", clickedSquare);
-
+        
           // Check for game over conditions
-          if (game.game_over()) {
-            if (game.in_checkmate()) {
+          if (game.isGameOver()) {
+            if (game.isCheckmate()) {
               alert('Checkmate!');
-            } else if (game.in_stalemate()) {
+            } else if (game.isStalemate()) {
               alert('Stalemate!');
             } else if (game.in_draw()) {
               alert('Draw!');
             }
+          } else {
+            // Let the AI make a move
+            makeAIMove();
           }
         } else {
           // Move was invalid
@@ -85,6 +112,8 @@ const Chessboard: React.FC = () => {
           setPossibleMoves([]);
           console.log("Invalid move from", selectedSquare, "to", clickedSquare);
         }
+
+
       }
     } else {
       // No piece selected yet
@@ -99,8 +128,57 @@ const Chessboard: React.FC = () => {
         // Clicked on empty square or opponent's piece but no piece selected - do nothing
         console.log("Clicked on", clickedSquare, "but no piece selected");
       }
+
+
+      if (!game.isGameOver()) {
+        // makeAIMove();
+      }
+
     }
   };
+
+
+
+
+
+  const makeAIMove = () => {
+    const game = gameRef.current;
+    const stockfish = stockfishRef.current;
+
+    if (stockfish) {
+      // Set up a handler to receive the engine's move
+      stockfish.onMessage((message) => {
+        if (message.startsWith('bestmove')) {
+          const bestMove = message.split(' ')[1];
+          if (bestMove) {
+            game.move(bestMove, { sloppy: true });
+            setBoardState([...game.board()]);
+            setSelectedSquare(null);
+            setPossibleMoves([]);
+            setGameState((prev) => prev + 1);
+            
+            // Check for game over conditions
+            if (game.isGameOver()) {
+              if (game.isCheckmate()) {
+                alert('Checkmate! You lose.');
+              } else if (game.isStalemate()) {
+                alert('Stalemate!');
+              } else if (game.in_draw()) {
+                alert('Draw!');
+              }
+            }
+          }
+        }
+      });
+      // Send the current position to Stockfish
+      stockfish.send('ucinewgame');
+      stockfish.send(`position fen ${game.fen()}`);
+      stockfish.send('go depth 15');
+    }
+  };
+
+
+
 
   const renderSquare = (square: SquareType, row: number, col: number) => {
     const isWhiteSquare = (row + col) % 2 === 0;
