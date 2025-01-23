@@ -15,7 +15,21 @@ const bot = new Bot(token);
 
 
 
- 
+  // Start command to reset or begin registration
+bot.command('start', async (ctx) => {
+
+  
+      // Welcome message
+      await ctx.reply(
+
+        `Hi there! Press The button to start your Tate Chess game.\nConsider a donation to keep development going:\nSOLANA = BYnkFDwRufuiZJ4PR7oYVrWvgMT3bAy7FiL5SozrFDTw
+  
+      `);
+
+
+
+});
+
  
 
 
@@ -36,18 +50,13 @@ bot.on('message', async (ctx) => {
   
  
     
-    // Welcome message
-    await ctx.reply(`
-      Hi there! Press The button to start your Tate Chess game. \n
-      Consider a donation to keep development going:\n
+  await ctx.reply(
+        
+    `Hi there! Press The button to start your Tate Chess game.\nConsider a donation to keep development going:\nSOLANA = BYnkFDwRufuiZJ4PR7oYVrWvgMT3bAy7FiL5SozrFDTw
 
-      SOLANA = BYnkFDwRufuiZJ4PR7oYVrWvgMT3bAy7FiL5SozrFDTw
+  `);
 
-    `);
-  }
-
- 
-);
+  });
 
 
 
