@@ -16,10 +16,7 @@ const bot = new Bot(token);
 
 
  
-
-
-
-
+ 
 
 
 
@@ -41,8 +38,11 @@ bot.on('message', async (ctx) => {
     
     // Welcome message
     await ctx.reply(`
-      Hi there! I see this is your first interaction. 
-      Let's get you registered! What is your first name?
+      Hi there! Press The button to start your Tate Chess game. \n
+      Consider a donation to keep development going:\n
+
+      SOLANA = BYnkFDwRufuiZJ4PR7oYVrWvgMT3bAy7FiL5SozrFDTw
+
     `);
   }
 
