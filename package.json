@@ -2,6 +2,7 @@
   "name": "tate_chess",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,7 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vercel/node": "^5.0.2",
     "chess.js": "^1.0.0",
+    "grammy": "^1.34.0",
     "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
