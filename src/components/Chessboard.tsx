@@ -20,9 +20,9 @@ const TEXT_SNIPPETS = [
 "You have to give up the peace of mind for an extraordinary life. Learn to be at peace with the chaos. ",
 "You should TRAIN LIKE AN ANIMAL. Learn more. And talk much less.  ",
 "Some people were born to be losers. They will always be losers. What are you? ",
-"Doesn’t matter how useless that politician is, he’s smooth in interviews and everybody knows his name.This is the end goal for a man. ",
+"Doesn’t matter how useless that politician is, he’s smooth in interviews and everybody knows his name. This is the end goal for a man.",
 "Brave men use fear to heighten senses - then proceed ANYWAY. Cowards scream “don’t be afraid!” ",
-"Money is like water. Stand in the right place at the right time - you get wet. ",
+"Money is like water. Stand in the right place at the right time - you get wet.",
 "Don’t take mindset tips from the happy man. Take them from the depressed miserable man who still performs exceptionally. ",
 "Keep the anger - learn some self-control - and focus effectively. Unlimited motivation awaits.",
 "Be sad and enjoy being sad. Be happy and enjoy being happy.",
@@ -206,7 +206,7 @@ const Chessboard: React.FC = () => {
             // Check for game over conditions
             if (game.isGameOver()) {
               if (game.isCheckmate()) {
-                alert('Checkmate! You lose.');
+                alert('Checkmate! In chess. There is no luck. NONE.');
               } else if (game.isStalemate()) {
                 alert('Stalemate!');
               } else if (game.isDraw()) {
@@ -245,7 +245,7 @@ const Chessboard: React.FC = () => {
           <Piece piece={square} />
         )}
         {isPossibleMove && (
-          <div className="absolute inset-0 bg-yellow-300 opacity-50"></div>
+          <div className="absolute inset-0 bg-yellow-200 opacity-50"></div>
         )}
       </div>
     );
@@ -267,8 +267,8 @@ const Chessboard: React.FC = () => {
     </div>
 
     {/* Add this text snippet display */}
-    <div className="mt-8 p-2 bg-gray-800 rounded-lg text-green-400 text-center max-w-2xl">
-      <p className="md:text-xl  md:text-xl text-xs font-mono">{snippets[currentSnippetIndex]}</p>
+    <div className="mt-8 p-1 bg-gray-700 rounded-lg text-green-400 text-center max-w-2xl">
+      <p className="md:text-xl text-xs font-mono">{snippets[currentSnippetIndex]}</p>
     </div>
   </div>
 
