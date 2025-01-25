@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import Chessboard from '../components/Chessboard';
 import MatrixBackground from '../components/MatrixBackground';
 
+
+
 declare global {
   interface Window {
     Telegram?: { WebApp: WebApp; } | undefined;
