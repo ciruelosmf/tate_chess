@@ -18,7 +18,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Tate Chess Game (not affiliatted)",
+  title: "Tate Chess Game ------ (not affiliatted)",
   description: "Play Chess in a certain Tate way",
 };
 

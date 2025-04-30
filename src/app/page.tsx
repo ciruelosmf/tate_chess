@@ -51,7 +51,7 @@ export default function Home() {
       <MatrixBackground />
 
       {/* Show standard start button if not in Telegram and app is initialized */}
-      {initialized && !isTelegramApp && !showGame && (
+      {initialized  && !showGame && (
         <button 
           onClick={() => setShowGame(true)}
           className="px-8 py-4 bg-green-600 text-white text-xl font-bold rounded-lg shadow-xl hover:bg-green-700 transition-colors z-20 animate-pulse fixed"
