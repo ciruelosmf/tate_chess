@@ -13,8 +13,12 @@ declare global {
 export default function Home() {
   const [showGame, setShowGame] = useState(false);
   const [isTelegramApp, setIsTelegramApp] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
+    // Set initialized to true to prevent flickering
+    setInitialized(true);
+    
     // Check if Telegram WebApp is available
     if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
       const webapp = window.Telegram.WebApp;
@@ -45,11 +49,11 @@ export default function Home() {
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-800">
       <MatrixBackground />
 
-      {/* Show standard start button if not in Telegram */}
-      {!isTelegramApp && !showGame && (
+      {/* Show standard start button if not in Telegram and app is initialized */}
+      {initialized && !isTelegramApp && !showGame && (
         <button 
           onClick={() => setShowGame(true)}
-          className="px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow-lg hover:bg-green-700 transition-colors z-10 animate-pulse"
+          className="px-8 py-4 bg-green-600 text-white text-xl font-bold rounded-lg shadow-xl hover:bg-green-700 transition-colors z-20 animate-pulse fixed"
         >
           Start Game
         </button>
