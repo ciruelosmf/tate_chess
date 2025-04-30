@@ -22,6 +22,7 @@ export default function Home() {
     // Check if Telegram WebApp is available
     if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
       const webapp = window.Telegram.WebApp;
+      console.log("setIsTelegramApp");
       setIsTelegramApp(true);
 
       // Ensure WebApp is only initialized on the client side
