@@ -9,8 +9,4 @@ interface WebApp {
     };
   }
   
-  interface Window {
-    Telegram?: {
-      WebApp: WebApp;
-    };
-  }
+ 
